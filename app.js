@@ -29,6 +29,7 @@ app.post('/login', function (req, res) {
     console.log("username: " + username);
     console.log("password: " + password);
     console.log('query: ' + query);
+    console.log('test');
     
     db.get(query , function(err, row) {
 

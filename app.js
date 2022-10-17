@@ -6,6 +6,8 @@ var app = express();
 app.use(express.static('./static'));
 app.use(bodyParser.urlencoded({extended: true}));
 
+// Adding useless comment here
+
 var db = new sqlite3.Database(':memory:');
 db.serialize(function() {
   db.run("CREATE TABLE user (username TEXT, password TEXT, name TEXT)");
@@ -21,10 +23,10 @@ app.post('/login', function (req, res) {
     console.log('test');
 
     // Unsafe Query
-    var query = "SELECT name FROM user where username = '" + username + "' and password = '" + password + "'";
+    //var query = "SELECT name FROM user where username = '" + username + "' and password = '" + password + "'";
     
     // Query wihtout where clause (just to pass semgrep scan)
-    //var query = "SELECT name FROM user where username";
+    var query = "SELECT name FROM user where username";
 
     console.log("username: " + username);
     console.log("password: " + password);

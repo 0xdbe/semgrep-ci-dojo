@@ -1,22 +1,25 @@
-name: Semgrep Differential Scan
+name: Semgrep
+
 on:
-  pull_request
+  # Scan changed files in PRs (diff-aware scanning):
+  pull_request: {}
 
 jobs:
-
-  semgrep-diff:
+  semgrep:
+    # User-definable name of this GitHub Actions job:
+    name: Scan
+    # If you are self-hosting, change the following `runs-on` value: 
     runs-on: ubuntu-latest
 
-    steps:
-      - name: clone application source code
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-          path: 'src'
+    container:
+      # A Docker image with Semgrep installed. Do not change this.
+      image: returntocorp/semgrep
 
-      - name: scan source code
-        uses: docker://returntocorp/semgrep
-          with:
-            args: semgrep --sarif --output report.sarif --metrics=off --config="p/default" src/
-        
-        working-directory: src
+    steps:
+      # Fetch project source with GitHub Actions Checkout.
+      - uses: actions/checkout@v3
+      # Run the "semgrep ci" command on the command line of the docker image.
+      - run: semgrep ci
+        env:
+           # Add the rules that Semgrep uses by setting the SEMGREP_RULES environment variable. 
+           SEMGREP_RULES: p/default # more at semgrep.dev/explore

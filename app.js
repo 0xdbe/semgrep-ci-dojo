@@ -6,6 +6,8 @@ var app = express();
 app.use(express.static('./static'));
 app.use(bodyParser.urlencoded({extended: true}));
 
+// Adding useless comment here
+
 var db = new sqlite3.Database(':memory:');
 db.serialize(function() {
   db.run("CREATE TABLE user (username TEXT, password TEXT, name TEXT)");

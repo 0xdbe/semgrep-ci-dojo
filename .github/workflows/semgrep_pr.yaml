@@ -1,0 +1,22 @@
+name: Semgrep Differential Scan
+on:
+  pull_request
+
+jobs:
+
+  semgrep-diff:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: clone application source code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          path: 'src'
+
+      - name: scan source code
+        uses: docker://returntocorp/semgrep
+          with:
+            args: semgrep --sarif --output report.sarif --metrics=off --config="p/default" src/
+        
+        working-directory: src
